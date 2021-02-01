@@ -1,0 +1,11 @@
+.flex {
+    display: flex;
+}
+.content{
+    width: 70%;
+}
+.chat {
+    height: 200px;
+    width: 30%;
+    border: 1px solid red;
+}
