@@ -6,7 +6,7 @@ import {AuthContext} from "../context/AuthContext";
 import socket from "../core/socket";
 
 export const SettingNewRoom = ({vkl}) => {
-    const {loading, request, error, clearError} = useHttp()
+    const {loading, error, clearError} = useHttp()
     const [form, setForm] = useState({
         acePoints: '1/11', playerBalance: 100
     })
@@ -72,7 +72,7 @@ export const SettingNewRoom = ({vkl}) => {
                     </p>
                 </div>
                 <div className={classes.settingBu}>
-                    <li><NavLink to="/game21" disabled={loading} onClick={roomСreation} >создать</NavLink></li>
+                    <li><NavLink to={`/game21=${name}`} disabled={loading} onClick={roomСreation} >создать</NavLink></li>
                 </div>
             </div>
         </div>

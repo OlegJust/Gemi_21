@@ -3,6 +3,8 @@ const socket = require('socket.io');
 let {playrooms} = require("../temporaryDatabase/temporaryDatabase")
 let {message} = require("../temporaryDatabase/temporaryDatabase")
 
+const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
+
 module.exports = (http, options) => {
     const io = socket(http, options);
     io.on("connection", (socket) => {
@@ -39,24 +41,37 @@ module.exports = (http, options) => {
         })
 
         // ------------------ сработа в отдельной комнате
-        socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
-            let nameRoom = data.roomId;
-            if (data.roomId !== null) {
-                // let ass = 0
-                // for (const person of playrooms) {
-                //     if (person.nameRoom === nameRoom && data.body !== "") {
-                //         playrooms[ass].chat.push(data)
-                //         console.log(playrooms[ass].chat)
-                //     }
-                //     ass += 1
-                // }
-                console.log(socket.handshake.query)
-                socket.join(nameRoom)
+        // socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
+        //     let nameRoom = data.roomId;
+        //     if (data.roomId !== null) {
+        //         // let ass = 0
+        //         // for (const person of playrooms) {
+        //         //     if (person.nameRoom === nameRoom && data.body !== "") {
+        //         //         playrooms[ass].chat.push(data)
+        //         //         console.log(playrooms[ass].chat)
+        //         //     }
+        //         //     ass += 1
+        //         // }
+        //         console.log(socket.handshake.query)
+        //         socket.join(nameRoom)
+        //
+        //         // ------------------ отправка сообщение
+        //         io.in(nameRoom).emit("NEW_CHAT_MESSAGE_EVENT", data);
+        //     }
+        // })
+        //------------------------------------------------
 
-                // ------------------ отправка сообщение
-                io.in(nameRoom).emit("NEW_CHAT_MESSAGE_EVENT", data);
-            }
-        })
+        // Join a conversation
+        const { roomId } = socket.handshake.query;
+
+        socket.join(roomId);
+
+        // Listen for new messages
+        socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
+            io.in(roomId).emit(NEW_CHAT_MESSAGE_EVENT, data);
+            console.log(data)
+        });
+        // ---------------------------------------------------
 
 
         socket.on("disconnect", () => {

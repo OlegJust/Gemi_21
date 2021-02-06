@@ -13,8 +13,7 @@ export const useRoutes = isAuthenticated => {
           <CreatePage />
           <PlayroomsPage />
         </Route>
-          <Route path="/game21" exact>
-              <Game21 />
+          <Route path="/:roomId" component={Game21}>
           </Route>
         <Redirect to="/create" />
       </Switch>

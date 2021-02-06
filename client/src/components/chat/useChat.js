@@ -2,15 +2,18 @@ import { useEffect, useRef, useState } from "react";
 import socketIOClient from "socket.io-client";
 
 const NEW_CHAT_MESSAGE_EVENT = "newChatMessage";
+const SOCKET_SERVER_URL = "http://localhost:5000";
 
 const useChat = (roomId) => {
   const [messages, setMessages] = useState([]);
   const socketRef = useRef();
 
   useEffect(() => {
-    socketRef.current = socketIOClient();
+    socketRef.current = socketIOClient( {
+      query: { roomId },
+    });
 
-    socketRef.current.on("NEW_CHAT_MESSAGE_EVENT", (message) => {
+    socketRef.current.on(NEW_CHAT_MESSAGE_EVENT, (message) => {
       const incomingMessage = {
         ...message,
         ownedByCurrentUser: message.senderId === socketRef.current.id,
@@ -23,11 +26,10 @@ const useChat = (roomId) => {
     };
   }, [roomId]);
 
-  const sendMessage = ({message,name,roomId}) => {
-    socketRef.current.emit("NEW_CHAT_MESSAGE_EVENT", {
-      body: message,
-      senderId: name,
-      roomId
+  const sendMessage = (messageBody) => {
+    socketRef.current.emit(NEW_CHAT_MESSAGE_EVENT, {
+      body: messageBody,
+      senderId: socketRef.current.id,
     });
   };
 

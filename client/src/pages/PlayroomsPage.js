@@ -4,7 +4,6 @@ import {Loader} from '../components/Loader'
 import {Navbar} from "../components/Navbar";
 import {AuthContext} from "../context/AuthContext";
 import classes from "./PlayroomsPage.module.css"
-import MainChat from "../components/chat/MainChat";
 import socket from "../core/socket"
 
 
