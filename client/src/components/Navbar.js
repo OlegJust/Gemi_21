@@ -38,7 +38,7 @@ export const Navbar = ({playrooms,userPlayroom}) => {
                         return (
                             <div className={classes.room} key={room.nameRoom}><NavLink
                                     className={classes.navLink}
-                                    to="/game21"
+                                    to={`/game21=${room.nameRoom}`}
                                     disabled={auth.loading}
                                     onClick={() => {joinUser(room.nameRoom)}}
                                 >{"комната " + room.nameRoom}{ "Игроков" + userRoom(room.participants.length)}</NavLink>

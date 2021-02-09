@@ -30,12 +30,15 @@ module.exports = (http, options) => {
             let ass = 0
             for (const person of playrooms) {
                 if (person.nameRoom === data.nameRoom) {
-                    playrooms[ass].participants.push(data.name)
-                    // ----- если ктото присоединиться к комноте то показываем пользователю который ище не вашол
-                    socket.broadcast.emit("get userPlayroom", data = playrooms[ass].participants)
-
+                    if (-1 === playrooms[ass].participants.indexOf(`${data.name}`)) {
+                        console.log(`${data.name}`)
+                        playrooms[ass].participants.push(data.name)
+                        // ----- если ктото присоединиться к комноте то показываем пользователю который ище не вашол
+                        socket.broadcast.emit("get userPlayroom", data = playrooms[ass].participants)
+                    }
+                } else {
+                    ass += 1
                 }
-                ass += 1
             }
 
         })
