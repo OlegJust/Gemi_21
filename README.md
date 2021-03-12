@@ -4,6 +4,7 @@ Geme 21 Onlain
   внутри проекта:
   -> npm i
   потом в папке client
+  
   -> cd client
   -> npm i
 
