@@ -43,27 +43,6 @@ module.exports = (http, options) => {
 
         })
 
-        // ------------------ сработа в отдельной комнате
-        // socket.on("NEW_CHAT_MESSAGE_EVENT", (data) => {
-        //     let nameRoom = data.roomId;
-        //     if (data.roomId !== null) {
-        //         // let ass = 0
-        //         // for (const person of playrooms) {
-        //         //     if (person.nameRoom === nameRoom && data.body !== "") {
-        //         //         playrooms[ass].chat.push(data)
-        //         //         console.log(playrooms[ass].chat)
-        //         //     }
-        //         //     ass += 1
-        //         // }
-        //         console.log(socket.handshake.query)
-        //         socket.join(nameRoom)
-        //
-        //         // ------------------ отправка сообщение
-        //         io.in(nameRoom).emit("NEW_CHAT_MESSAGE_EVENT", data);
-        //     }
-        // })
-        //------------------------------------------------
-
         // Join a conversation
         const { roomId } = socket.handshake.query;
 
@@ -71,9 +50,60 @@ module.exports = (http, options) => {
 
         // Listen for new messages
         socket.on(NEW_CHAT_MESSAGE_EVENT, (data) => {
-            io.in(roomId).emit(NEW_CHAT_MESSAGE_EVENT, data);
             console.log(data)
+            io.in(roomId).emit("0NEW_CHAT_MESSAGE_EVENT", data);
         });
+        // ---------------------------------------------------
+        // socket.on('ROOM:JOIN', ({roomId, userName}) => {
+        //     socket.join(roomId);
+        //
+        //     // ============ для того что бы один человек от своего имени мог писатьиз разных сайтов
+        //     let notUerName = true
+        //     for (let val of rooms.get(roomId).get('users').keys()) {
+        //         if (val !== userName) {
+        //             notUerName = true
+        //             console.log(`val: ${val}, userName: ${userName}`)
+        //         } else {
+        //             notUerName = false
+        //         }
+        //     }
+        //     if (notUerName) {
+        //         const arrayID = [socket.id]
+        //         rooms.get(roomId).get('users').set(userName,arrayID);
+        //     } else if(!notUerName){
+        //         let arrayID = []
+        //         for (let key of rooms.get(roomId).get('users').get(userName)) {
+        //             arrayID.push(key)
+        //         }
+        //         arrayID.push(socket.id)
+        //         rooms.get(roomId).get('users').set(userName,arrayID);
+        //     }
+        //
+        //     // ============
+        //     //rooms.get(roomId).get('users').set(socket.id, userName);
+        //     //console.log(rooms.get(roomId).get('users'))
+        //
+        //     const users = [...rooms.get(roomId).get('users').keys()];
+        //     socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users);
+        // });
+        //
+        // socket.on('ROOM:NEW_MESSAGE', ({roomId, userName, text}) => {
+        //     const obj = {
+        //         userName,
+        //         text,
+        //     };
+        //     rooms.get(roomId).get('messages').push(obj);
+        //     socket.to(roomId).broadcast.emit('ROOM:NEW_MESSAGE', obj);
+        // });
+        //
+        // socket.on('disconnect', () => {
+        //     rooms.forEach((value, roomId) => {
+        //         if (value.get('users').delete(socket.id)) {
+        //             const users = [...value.get('users').values()];
+        //             socket.to(roomId).broadcast.emit('ROOM:SET_USERS', users);
+        //         }
+        //     });
+        // });
         // ---------------------------------------------------
 
 

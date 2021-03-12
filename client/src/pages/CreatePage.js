@@ -12,7 +12,6 @@ export const CreatePage = () => {
         } else  {
             setVkl("off")
         }
-
     }
 
     return (
